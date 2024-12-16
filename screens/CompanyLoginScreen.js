@@ -6,7 +6,7 @@ import {
   Button,
   StyleSheet,
   Alert,
-  TouchableOpacity,
+  TouchableOpacity, 
 } from "react-native";
 import { db } from "../firebase"; // Import Firebase config
 import { collection, query, where, getDocs } from "firebase/firestore";
