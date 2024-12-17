@@ -4,60 +4,68 @@ import {
   Text,
   FlatList,
   StyleSheet,
+  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import { AuthContext } from "../Context/AuthContext";
-import questionnaireData from "../data/questionnaireData.json"; // Import JSON file
+import questionnaire from "../data/questionnaireData.json"; // Import updated JSON data
 
-const QuestionnaireScreen = () => {
-  const { user } = useContext(AuthContext); // Get user data from context
+const TopicsScreen = ({ navigation }) => {
+  const { user } = useContext(AuthContext); // Access user data
   const [topics, setTopics] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [error, setError] = useState(null); // Add error state
 
-  // Fetch questionnaire topics based on the employee's department
-  const fetchQuestionnaireTopics = () => {
-    if (user && user.department) {
-      const department = user.department;
-
-      // Filter topics from the JSON file for the current department
-      const departmentTopics = questionnaireData.filter(
-        (topic) => topic.department === department
-      );
-
-      setTopics(departmentTopics);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  };
-
-  // Run the fetch logic when user data is available
   useEffect(() => {
-    fetchQuestionnaireTopics();
+    // Fetch topics for the department
+    if (user && user.department) {
+      const departmentTopics = questionnaire[user.department]; // Access topics for the user's department
+
+      if (departmentTopics) {
+        const topicNames = Object.keys(departmentTopics); // Get the keys (topics) from the department
+        setTopics(topicNames || []); // Set topics as an array of topic names
+      } else {
+        setError("No topics found for your department.");
+      }
+    } else {
+      setError("User data is not available.");
+    }
+    setIsLoading(false); // End loading when topics are fetched or if error occurs
   }, [user]);
 
-  // Render loading state or topics
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+  const handleTopicPress = (topic) => {
+    // Navigate to the Questions screen with the selected topic
+    navigation.navigate("QuestionsScreen", { topic });
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Questionnaire Topics</Text>
-
-      {topics.length > 0 ? (
+      <Text style={styles.title}>
+        Topics for {user?.department || "your department"}
+      </Text>
+      {error ? (
+        <Text style={styles.errorText}>{error}</Text>
+      ) : (
         <FlatList
           data={topics}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item} // Use item as the key, assuming topic names are unique
           renderItem={({ item }) => (
-            <View style={styles.topicCard}>
-              <Text style={styles.topicTitle}>{item.title}</Text>
-              <Text>{item.description}</Text>
-            </View>
+            <TouchableOpacity
+              style={styles.topicCard}
+              onPress={() => handleTopicPress(item)}
+            >
+              <Text style={styles.topicTitle}>{item}</Text>
+            </TouchableOpacity>
           )}
         />
-      ) : (
-        <Text>No topics available for this department.</Text>
       )}
     </View>
   );
@@ -79,12 +87,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#fff",
     borderRadius: 8,
-    elevation: 3, // for Android shadow
+    elevation: 2,
   },
   topicTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
   },
 });
 
-export default QuestionnaireScreen;
+export default TopicsScreen;

@@ -44,6 +44,8 @@ const CompanyLoginScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
 
+      console.log("Query result:", querySnapshot.docs); // Log query result
+
       if (!querySnapshot.empty) {
         Alert.alert("Success", "Login successful!");
         console.log("Company found:", querySnapshot.docs[0].data());

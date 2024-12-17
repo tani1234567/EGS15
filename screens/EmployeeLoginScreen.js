@@ -17,7 +17,7 @@ const EmployeeLoginScreen = ({ navigation, route }) => {
   const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useContext(AuthContext); // Use AuthContext to store user data
+  const { setUser } = useContext(AuthContext); // Use setUser to update user data
 
   const validateInputs = () => {
     if (!employeeId || !password) {
@@ -47,7 +47,7 @@ const EmployeeLoginScreen = ({ navigation, route }) => {
         Alert.alert("Success", "Login successful!");
         console.log("Employee found:", employeeData);
 
-        // Set the employee's data in AuthContext
+        // Set the employee's data in AuthContext using setUser
         setUser({
           employeeId: querySnapshot.docs[0].id,
           department: employeeData.department, // Set department
