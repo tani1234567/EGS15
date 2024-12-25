@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
-} from "react-native";
+} from "react-native";  
 import { db } from "../firebase"; // Firebase configuration
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { AuthContext } from "../Context/AuthContext"; // Import AuthContext

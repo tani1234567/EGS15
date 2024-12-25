@@ -1,9 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { View, Text, Alert, FlatList, StyleSheet, Button } from "react-native";
 import { AuthContext } from "../Context/AuthContext"; // Import AuthContext
-import { addDoc, collection } from "firebase/firestore"; // Firebase imports
-import { db } from "../firebase";
-import questionnaire from "../data/questionnaireData.json"; // Import your questionnaire.json
+import { collection, doc, getDocs, addDoc } from "firebase/firestore"; // Firebase imports
+import { db } from "../firebase"; // Firebase configuration
 import { RadioButton } from "react-native-paper"; // Import RadioButton
 
 const QuestionsScreen = ({ navigation, route }) => {
@@ -11,36 +10,47 @@ const QuestionsScreen = ({ navigation, route }) => {
   const { topic } = route.params; // Get the topic from navigation params
   const [questions, setQuestions] = useState([]);
   const [responses, setResponses] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("QuestionsScreen: user", user);
-    console.log("QuestionsScreen: loading", loading);
+    const fetchQuestions = async () => {
+      if (loading) return; // Wait for the loading state to complete
 
-    // Ensure the user data is loaded and accessible
-    if (loading) return; // Wait for loading state to be false
-    if (!user || !user.department) {
-      Alert.alert("Error", "User department not found. Please log in again.");
-      return;
-    }
+      if (!user || !user.department) {
+        Alert.alert("Error", "User department not found. Please log in again.");
+        return;
+      }
 
-    // Locate the questions for the given department and topic
-    const departmentQuestions = questionnaire[user.department];
-    if (!departmentQuestions) {
-      Alert.alert("Error", "No data found for this department.");
-      return;
-    }
+      try {
+        // Fetch questions from Firebase Firestore
+        const departmentRef = doc(db, "Departments", user.department);
+        const topicRef = collection(
+          departmentRef,
+          "Topics",
+          topic,
+          "Questions"
+        );
+        const querySnapshot = await getDocs(topicRef);
 
-    // Find the topic data within the department
-    const topicData = departmentQuestions[topic];
-    if (topicData) {
-      setQuestions(topicData);
-    } else {
-      Alert.alert(
-        "Error",
-        "No questions found for the selected topic. Please try another."
-      );
-    }
-  }, [user, loading, topic]); // Ensure useEffect runs only when user, loading, or topic change
+        const fetchedQuestions = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setQuestions(fetchedQuestions);
+      } catch (error) {
+        console.error("Error fetching questions: ", error);
+        Alert.alert(
+          "Error",
+          "Failed to fetch questions. Please try again later."
+        );
+      } finally {
+        setIsLoading(false); // End loading state
+      }
+    };
+
+    fetchQuestions();
+  }, [user, loading, topic]);
 
   const handleOptionSelect = (questionIndex, weight) => {
     setResponses((prev) => ({
@@ -57,15 +67,13 @@ const QuestionsScreen = ({ navigation, route }) => {
     const totalScore = calculateScore();
 
     try {
-      // Check if user is authenticated by checking user.employeeId or user.id (based on your data)
+      // Ensure user is authenticated
       if (!user || !user.employeeId) {
-        // Update this to check for employeeId instead of uid
         Alert.alert("Error", "User not authenticated. Please log in again.");
         return;
       }
 
       // Save the score in Firestore
-      // Use db instead of firestore
       await addDoc(collection(db, "questionnaireResponses"), {
         topic: topic,
         score: totalScore,
@@ -85,9 +93,7 @@ const QuestionsScreen = ({ navigation, route }) => {
     }
   };
 
-
-  // Render loading state while user data is still being loaded
-  if (loading) {
+  if (isLoading || loading) {
     return <Text>Loading...</Text>;
   }
 
@@ -96,7 +102,7 @@ const QuestionsScreen = ({ navigation, route }) => {
       <Text style={styles.topicText}>{`Topic: ${topic}`}</Text>
       <FlatList
         data={questions}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (
           <View style={styles.questionContainer}>
             <Text style={styles.questionText}>{item.question}</Text>

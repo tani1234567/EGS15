@@ -9,6 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Initialize state to hold user data
   const [loading, setLoading] = useState(true); // Keep track of loading state
   const auth = getAuth();
+  const [companyId, setCompanyId] = useState(null);
+  const [companyName, setCompanyName] = useState(null);
 
   // Load user session from AsyncStorage on app startup
   useEffect(() => {
@@ -111,7 +113,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        login,
+        logout,
+        companyId,
+        setCompanyId,
+        companyName,
+        setCompanyName,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

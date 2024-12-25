@@ -8,7 +8,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { AuthContext } from "../Context/AuthContext";
-import questionnaire from "../data/questionnaireData.json"; // Import updated JSON data
+import { db } from "../firebase"; // Ensure the correct Firebase configuration path
+import { collection, getDocs, doc } from "firebase/firestore";
 
 const TopicsScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext); // Access user data
@@ -17,20 +18,30 @@ const TopicsScreen = ({ navigation }) => {
   const [error, setError] = useState(null); // Add error state
 
   useEffect(() => {
-    // Fetch topics for the department
-    if (user && user.department) {
-      const departmentTopics = questionnaire[user.department]; // Access topics for the user's department
+    const fetchTopics = async () => {
+      if (user && user.department) {
+        try {
+          const departmentRef = doc(db, "Departments", user.department);
+          const topicsCollectionRef = collection(departmentRef, "Topics");
+          const snapshot = await getDocs(topicsCollectionRef);
 
-      if (departmentTopics) {
-        const topicNames = Object.keys(departmentTopics); // Get the keys (topics) from the department
-        setTopics(topicNames || []); // Set topics as an array of topic names
+          if (!snapshot.empty) {
+            const fetchedTopics = snapshot.docs.map((doc) => doc.id);
+            setTopics(fetchedTopics || []);
+          } else {
+            setError("No topics found for your department.");
+          }
+        } catch (err) {
+          console.error("Error fetching topics:", err);
+          setError("Failed to fetch topics. Please try again later.");
+        }
       } else {
-        setError("No topics found for your department.");
+        setError("User data is not available.");
       }
-    } else {
-      setError("User data is not available.");
-    }
-    setIsLoading(false); // End loading when topics are fetched or if error occurs
+      setIsLoading(false); // End loading when topics are fetched or if error occurs
+    };
+
+    fetchTopics();
   }, [user]);
 
   const handleTopicPress = (topic) => {
@@ -56,7 +67,7 @@ const TopicsScreen = ({ navigation }) => {
       ) : (
         <FlatList
           data={topics}
-          keyExtractor={(item) => item} // Use item as the key, assuming topic names are unique
+          keyExtractor={(item) => item} // Use topic name as the key
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.topicCard}
