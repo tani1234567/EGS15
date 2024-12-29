@@ -8,7 +8,9 @@ import EmployeeLoginScreen from "./screens/EmployeeLoginScreen";
 import EmployeeRegistrationScreen from "./screens/EmployeeRegistrationScreen";
 import QuestionnaireTopicsScreen from "./screens/QuestionnaireTopicsScreen";
 import QuestionsScreen from "./screens/QuestionsScreen";
-//import UploadData from "./screens/uploadData";
+import DashboardScreen from "./screens/Dashboard";
+// import UploadData from "./screens/uploadData";
+import EnvironmentalPillarScreen from "./screens/pillars/EnvironmentalPillar";
 
 const Stack = createStackNavigator();
 
@@ -17,16 +19,16 @@ const App = () => {
     <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="CompanyLoginScreen">
-          <Stack.Screen
-            name="CompanyLoginScreen"
-            component={CompanyLoginScreen}
-            options={{ title: "Company Login" }}
-          />
           {/* <Stack.Screen
             name="UploadData"
             component={UploadData}
             options={{ title: "uploadData" }}
           /> */}
+          <Stack.Screen
+            name="CompanyLoginScreen"
+            component={CompanyLoginScreen}
+            options={{ title: "Company Login" }}
+          />
           <Stack.Screen
             name="CompanyRegistrationScreen"
             component={CompanyRegistrationScreen}
@@ -51,6 +53,16 @@ const App = () => {
             name="QuestionsScreen"
             component={QuestionsScreen}
             options={{ title: "QuestionsScreen" }}
+          />
+          <Stack.Screen
+            name="Dashboard"
+            component={DashboardScreen}
+            options={{ title: "Dashboard" }}
+          />
+          <Stack.Screen
+            name="EnvironmentalPillar"
+            component={EnvironmentalPillarScreen}
+            options={{ title: "EnvironmentalPillar" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

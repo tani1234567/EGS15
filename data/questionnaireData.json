@@ -22,53 +22,282 @@
           "Comprehensive Scope 1, 2, and 3 emissions consistently included"
         ],
         "weights": [1, 2, 3, 4, 5]
-      }
-    ],
-    "Auditing": [
-      {
-        "question": "How often do you conduct audits?",
-        "options": ["Monthly", "Quarterly", "Annually", "Never"],
-        "weights": [5, 4, 3, 1]
       },
       {
-        "question": "Who performs the audits?",
-        "options": ["Internal Team", "External Firm"],
-        "weights": [3, 5]
+        "question": "Does the organization take measures to reduce the carbon footprint of its products?",
+        "options": [
+          "No measures implemented",
+          "Limited reduction measures for specific products",
+          "Measures implemented for most products",
+          "Significant reduction measures integrated",
+          "Industry-leading measures applied with measurable impact"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "How is the carbon footprint information communicated to customers?",
+        "options": [
+          "No communication to customers",
+          "Limited communication on specific products",
+          "Information on most product labels",
+          "Detailed information shared through labels and reports",
+          "Transparent lifecycle information available to stakeholders"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization collaborate with suppliers and partners to reduce the carbon footprint across the value chain?",
+        "options": [
+          "No collaboration with suppliers or partners",
+          "Minimal collaboration for selected products or processes",
+          "Regular collaboration with key suppliers",
+          "Collaboration with most suppliers and partners",
+          "Strategic partnerships for shared carbon reduction goals"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are carbon footprint reduction goals integrated into the organization’s ESG strategy?",
+        "options": [
+          "No reduction goals set",
+          "Basic goals exist but not integrated into the ESG strategy",
+          "Goals partially integrated into ESG strategy",
+          "Goals fully integrated and reviewed regularly",
+          "Advanced goals aligned with international frameworks (e.g., SBTi)"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      }
+    ],
+    "Carbon Emission": [
+      {
+        "question": "Does the organization have a formal strategy to measure and manage its carbon emissions?",
+        "options": [
+          "No strategy in place",
+          "Informal practices exist, but no structured or formal strategy",
+          "A strategy exists but is limited in scope and implementation",
+          "A comprehensive strategy is in place and partially implemented",
+          "A robust strategy is fully implemented, monitored, and aligned with best practices"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization monitor Scope 1, Scope 2, and Scope 3 carbon emissions?",
+        "options": [
+          "No emissions are monitored",
+          "Only Scope 1 emissions are monitored",
+          "Scope 1 and 2 emissions are monitored",
+          "Scope 1, 2, and some Scope 3 emissions are monitored",
+          "Comprehensive monitoring of Scope 1, 2, and 3 emissions"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are carbon reduction targets established and aligned with international frameworks (e.g., SBTi)?",
+        "options": [
+          "No carbon reduction targets are established",
+          "Basic reduction targets are set without alignment to frameworks",
+          "Reduction targets are partially aligned with international frameworks",
+          "Reduction targets are fully aligned with frameworks like SBTi",
+          "Advanced reduction targets are in place with regular progress tracking"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization implement carbon reduction initiatives (e.g., energy efficiency, renewable energy, process optimization)?",
+        "options": [
+          "No carbon reduction initiatives are implemented",
+          "Basic initiatives are implemented for specific areas",
+          "Carbon reduction initiatives are implemented for most operations",
+          "Comprehensive initiatives are implemented across the organization",
+          "Advanced and innovative carbon reduction initiatives are implemented and monitored"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization engage with stakeholders to address carbon emissions across the value chain?",
+        "options": [
+          "No engagement with stakeholders on carbon emissions",
+          "Minimal engagement for specific projects",
+          "Regular engagement with key stakeholders on carbon emission reduction",
+          "Comprehensive engagement across the value chain",
+          "Strategic partnerships with stakeholders to reduce emissions collaboratively"
+        ],
+        "weights": [1, 2, 3, 4, 5]
       }
     ]
   },
   "Resource Management": {
-    "Natural Resources": [
+    "Natural Resource Utilisation": [
       {
-        "question": "Does the organization monitor the usage of natural resources?",
+        "question": "Does the organization have a formal policy or strategy for sustainable natural resource utilization?",
         "options": [
-          "No monitoring conducted",
-          "Monitoring of some key resources only",
-          "Monitoring for most natural resources",
-          "Comprehensive monitoring system in place",
-          "Advanced monitoring with predictive analysis"
+          "No policy or strategy in place",
+          "Informal practices exist, but no structured or formal policy",
+          "A policy exists but is limited in scope and implementation",
+          "A comprehensive policy is in place and partially implemented",
+          "A robust policy is fully implemented, monitored, and aligned with best practices"
         ],
         "weights": [1, 2, 3, 4, 5]
       },
       {
-        "question": "Are there measures to conserve water resources?",
+        "question": "How does the organization monitor and manage its consumption of natural resources (e.g., water, raw materials)?",
         "options": [
-          "No conservation measures",
-          "Limited measures for specific areas",
-          "Measures implemented for most areas",
-          "Significant water conservation strategies in place",
-          "Industry-leading water conservation initiatives"
+          "No monitoring or management practices in place",
+          "Limited monitoring of specific resource types",
+          "Regular monitoring of key resources with some management practices",
+          "Comprehensive monitoring with effective resource management in most areas",
+          "Advanced monitoring systems with real-time tracking and optimization strategies"
         ],
         "weights": [1, 2, 3, 4, 5]
       },
       {
-        "question": "Does the organization aim for zero deforestation in its operations?",
+        "question": "Are renewable or alternative resources utilized to reduce reliance on non-renewable resources?",
         "options": [
-          "No aim for zero deforestation",
-          "Minimal efforts towards reducing deforestation",
-          "Partial efforts for zero deforestation",
-          "Significant steps towards achieving zero deforestation",
-          "Committed to achieving zero deforestation across operations"
+          "No efforts to utilize renewable or alternative resources",
+          "Limited use of renewable resources in select areas",
+          "Some renewable or alternative resources are integrated into operations",
+          "Extensive use of renewable resources with active plans for expansion",
+          "Fully integrated renewable resource strategy with measurable outcomes"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "How does the organization manage waste generated during resource utilization (e.g., recycling, upcycling)?",
+        "options": [
+          "No waste management practices related to resource utilization",
+          "Basic waste management practices in place",
+          "Recycling or upcycling practices implemented for some resources",
+          "Comprehensive waste management practices implemented for most resources",
+          "Industry-leading waste management with closed-loop processes"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are stakeholder engagements or partnerships in place to enhance sustainable resource management?",
+        "options": [
+          "No engagement with stakeholders or partners",
+          "Minimal collaboration for specific projects",
+          "Regular collaboration with key stakeholders for resource management",
+          "Partnerships with most stakeholders to promote sustainable resource management",
+          "Strategic partnerships to achieve shared goals in resource sustainability"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      }
+    ]
+  },
+  "Environmental Health & Safety": {
+    "Pollution Control" : [
+      {
+        "question": "Does the organization have a formal policy or strategy for pollution control?",
+        "options": [
+          "No policy or strategy in place",
+          "Informal practices exist, but no structured or formal policy",
+          "A policy exists but is limited in scope and implementation",
+          "A comprehensive policy is in place and partially implemented",
+          "A robust policy is fully implemented, monitored, and aligned with best practices"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "How does the organization monitor and manage air, water, and soil pollution caused by its operations?",
+        "options": [
+          "No monitoring or management practices in place",
+          "Limited monitoring for specific pollution types",
+          "Regular monitoring of pollution levels with some management practices",
+          "Comprehensive monitoring and management for most pollution sources",
+          "Advanced monitoring systems with real-time tracking and proactive management"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are pollution prevention and mitigation measures incorporated into the organization’s operations?",
+        "options": [
+          "No measures are implemented to prevent or mitigate pollution",
+          "Limited measures are in place for specific areas",
+          "Some prevention and mitigation measures are applied",
+          "Comprehensive measures are implemented across most operations",
+          "Industry-leading prevention and mitigation measures are consistently applied"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization use technologies or practices to minimize pollution (e.g., emissions control, wastewater treatment)?",
+        "options": [
+          "No technologies or practices are utilized",
+          "Basic technologies or practices are used in select areas",
+          "Technologies or practices are implemented for most high-impact areas",
+          "Advanced technologies or practices are widely implemented",
+          "State-of-the-art technologies are consistently utilized and regularly updated"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are there stakeholder engagements or partnerships to address pollution control?",
+        "options": [
+          "No engagement with stakeholders or partners",
+          "Minimal collaboration for specific projects",
+          "Regular collaboration with key stakeholders for pollution control",
+          "Partnerships with most stakeholders to promote pollution control",
+          "Strategic partnerships to achieve shared goals in pollution management"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      }
+    ]
+  },
+  "Waste Management": {
+    "Packaging Material & Waste Management" : [
+      {
+        "question": "Does the organization have a policy or strategy for managing packaging materials and waste?",
+        "options": [
+          "No policy or strategy in place",
+          "Informal practices exist, but no structured or formal policy",
+          "A policy exists but is limited in scope and implementation",
+          "A comprehensive policy is in place and partially implemented",
+          "A robust policy is fully implemented, monitored, and aligned with best practices"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "How does the organization minimize the use of packaging materials (e.g., lightweighting, redesign)?",
+        "options": [
+          "No efforts to minimize packaging material usage",
+          "Limited efforts in place for specific packaging types",
+          "Some initiatives implemented to reduce packaging materials",
+          "Comprehensive measures to reduce packaging materials across products",
+          "Advanced practices and innovations to minimize packaging materials organization-wide"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are recyclable, reusable, or biodegradable materials used in packaging?",
+        "options": [
+          "No use of recyclable, reusable, or biodegradable materials",
+          "Limited use for specific products",
+          "Some packaging incorporates recyclable, reusable, or biodegradable materials",
+          "Extensive use of sustainable materials in most packaging",
+          "Packaging is fully designed with recyclable, reusable, or biodegradable materials"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization implement waste management practices to handle packaging waste (e.g., collection, recycling programs)?",
+        "options": [
+          "No waste management practices for packaging waste",
+          "Basic waste management practices in place",
+          "Some initiatives for packaging waste collection and recycling",
+          "Comprehensive waste management programs for most packaging waste",
+          "Industry-leading practices with closed-loop systems for managing packaging waste"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are stakeholders (suppliers, customers) engaged in sustainable packaging and waste management practices?",
+        "options": [
+          "No engagement with stakeholders on packaging and waste management",
+          "Minimal engagement for specific projects",
+          "Regular engagement with key stakeholders on packaging waste management",
+          "Comprehensive engagement with suppliers and customers on sustainable practices",
+          "Strategic partnerships with stakeholders to achieve shared sustainability goals"
         ],
         "weights": [1, 2, 3, 4, 5]
       }

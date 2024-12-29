@@ -49,6 +49,11 @@ const TopicsScreen = ({ navigation }) => {
     navigation.navigate("QuestionsScreen", { topic });
   };
 
+  const handleDashboardPress = () => {
+    // Navigate to the Dashboard page
+    navigation.navigate("Dashboard");
+  };
+
   if (isLoading) {
     return (
       <View style={styles.container}>
@@ -78,6 +83,13 @@ const TopicsScreen = ({ navigation }) => {
           )}
         />
       )}
+      {/* Bottom Button to Navigate to Dashboard */}
+      <TouchableOpacity
+        style={styles.dashboardButton}
+        onPress={handleDashboardPress}
+      >
+        <Text style={styles.dashboardButtonText}>Go to Dashboard</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -108,6 +120,18 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 16,
     textAlign: "center",
+  },
+  dashboardButton: {
+    backgroundColor: "#007BFF",
+    padding: 16,
+    borderRadius: 8,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  dashboardButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

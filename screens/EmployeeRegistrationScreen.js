@@ -17,12 +17,15 @@ const EmployeeRegistrationScreen = ({ navigation, route }) => {
 
   const [open, setOpen] = useState(false); // For DropDownPicker
   const [departments, setDepartments] = useState([
-    { label: "HR", value: "HR" },
+    {
+      label: "Environmental Health & Safety",
+      value: "Environmental Health & Safety",
+    },
     { label: "Finance", value: "Finance" },
     { label: "IT", value: "IT" },
-    { label: "Operations", value: "Operations" },
+    { label: "Resource Management", value: "Resource Management" },
     { label: "Sustainability", value: "Sustainability" },
-    { label: "Marketing", value: "Marketing" },
+    { label: "Waste Management", value: "Waste Management" },
   ]);
 
   const validateInputs = async () => {

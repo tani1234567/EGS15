@@ -1,20 +1,58 @@
 import React, { useContext, useState, useEffect } from "react";
-import { View, Text, Alert, FlatList, StyleSheet, Button } from "react-native";
+import { View, Text, Alert, StyleSheet, Button } from "react-native";
 import { AuthContext } from "../Context/AuthContext"; // Import AuthContext
-import { collection, doc, getDocs, addDoc } from "firebase/firestore"; // Firebase imports
+import {
+  collection,
+  doc,
+  getDocs,
+  addDoc,
+  query,
+  where,
+} from "firebase/firestore"; // Firebase imports
 import { db } from "../firebase"; // Firebase configuration
 import { RadioButton } from "react-native-paper"; // Import RadioButton
 
 const QuestionsScreen = ({ navigation, route }) => {
-  const { user, loading } = useContext(AuthContext); // Access user and loading from AuthContext
+  const { user, loading, companyId, companyName } = useContext(AuthContext); // Access companyId, companyName from AuthContext
   const { topic } = route.params; // Get the topic from navigation params
   const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [responses, setResponses] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isAlreadyFilled, setIsAlreadyFilled] = useState(false); // To track if questionnaire is already filled
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const checkIfAlreadyFilled = async () => {
       if (loading) return; // Wait for the loading state to complete
+
+      if (!user || !user.employeeId || !companyId || !topic) {
+        Alert.alert("Error", "Required data not found. Please log in again.");
+        return;
+      }
+
+      try {
+        // Check if questionnaire has already been filled for this user, company, and topic
+        const responsesRef = collection(db, "questionnaireResponses");
+        const q = query(
+          responsesRef,
+          where("companyId", "==", companyId),
+          where("userId", "==", user.employeeId),
+          where("topic", "==", topic)
+        );
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // If there are responses for this user, company, and topic
+          setIsAlreadyFilled(true); // Set state to show message
+        }
+      } catch (error) {
+        console.error("Error checking questionnaire fill status: ", error);
+        Alert.alert("Error", "Failed to check if questionnaire is filled.");
+      }
+    };
+
+    const fetchQuestions = async () => {
+      if (isAlreadyFilled) return; // Skip fetching questions if already filled
 
       if (!user || !user.department) {
         Alert.alert("Error", "User department not found. Please log in again.");
@@ -49,14 +87,23 @@ const QuestionsScreen = ({ navigation, route }) => {
       }
     };
 
+    checkIfAlreadyFilled();
     fetchQuestions();
-  }, [user, loading, topic]);
+  }, [user, loading, companyId, topic, isAlreadyFilled]);
 
-  const handleOptionSelect = (questionIndex, weight) => {
+  const handleOptionSelect = (weight) => {
     setResponses((prev) => ({
       ...prev,
-      [questionIndex]: weight,
+      [currentQuestionIndex]: weight,
     }));
+  };
+
+  const handleNext = () => {
+    if (responses[currentQuestionIndex] === undefined) {
+      Alert.alert("Error", "Please select an option before proceeding.");
+      return;
+    }
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
   const calculateScore = () => {
@@ -65,6 +112,13 @@ const QuestionsScreen = ({ navigation, route }) => {
 
   const handleSubmit = async () => {
     const totalScore = calculateScore();
+    const responseDetails = questions.map((question, index) => ({
+      question: question.question,
+      selectedOption: question.options.find(
+        (_, i) => question.weights[i] === responses[index]
+      ),
+      weight: responses[index],
+    }));
 
     try {
       // Ensure user is authenticated
@@ -73,13 +127,16 @@ const QuestionsScreen = ({ navigation, route }) => {
         return;
       }
 
-      // Save the score in Firestore
+      // Save the responses with question details, score, companyId, and companyName in Firestore
       await addDoc(collection(db, "questionnaireResponses"), {
         topic: topic,
-        score: totalScore,
+        totalScore: totalScore,
         userId: user.employeeId, // Use employeeId as the identifier for the user
         department: user.department,
+        companyId: companyId, // Store companyId
+        companyName: companyName, // Store companyName
         timestamp: new Date(),
+        responses: responseDetails, // Add the question and selected responses here
       });
 
       Alert.alert("Success", "Your responses have been submitted!");
@@ -97,35 +154,49 @@ const QuestionsScreen = ({ navigation, route }) => {
     return <Text>Loading...</Text>;
   }
 
+  if (isAlreadyFilled) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.messageText}>
+          You have already filled out this questionnaire.
+        </Text>
+      </View>
+    );
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
   return (
     <View style={styles.container}>
       <Text style={styles.topicText}>{`Topic: ${topic}`}</Text>
-      <FlatList
-        data={questions}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View style={styles.questionContainer}>
-            <Text style={styles.questionText}>{item.question}</Text>
-            {item.options.map((option, optionIndex) => (
-              <View key={optionIndex} style={styles.optionContainer}>
-                <RadioButton
-                  value={item.weights[optionIndex]}
-                  status={
-                    responses[index] === item.weights[optionIndex]
-                      ? "checked"
-                      : "unchecked"
-                  }
-                  onPress={() =>
-                    handleOptionSelect(index, item.weights[optionIndex])
-                  }
-                />
-                <Text>{option}</Text>
-              </View>
-            ))}
-          </View>
-        )}
-      />
-      <Button title="Submit" onPress={handleSubmit} color="#6200EE" />
+      {currentQuestion && (
+        <View style={styles.questionContainer}>
+          <Text style={styles.questionText}>{currentQuestion.question}</Text>
+          {currentQuestion.options.map((option, optionIndex) => (
+            <View key={optionIndex} style={styles.optionContainer}>
+              <RadioButton
+                value={currentQuestion.weights[optionIndex]}
+                status={
+                  responses[currentQuestionIndex] ===
+                  currentQuestion.weights[optionIndex]
+                    ? "checked"
+                    : "unchecked"
+                }
+                onPress={() =>
+                  handleOptionSelect(currentQuestion.weights[optionIndex])
+                }
+              />
+              <Text>{option}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+      {!isLastQuestion ? (
+        <Button title="Next" onPress={handleNext} color="#6200EE" />
+      ) : (
+        <Button title="Submit" onPress={handleSubmit} color="#6200EE" />
+      )}
     </View>
   );
 };
@@ -158,6 +229,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 8,
+  },
+  messageText: {
+    fontSize: 18,
+    color: "#FF6347", // Red color for the message
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 
