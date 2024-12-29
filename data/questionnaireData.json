@@ -1,44 +1,77 @@
 {
-  "Sustainability": [
-    {
-      "topic": "Product Carbon Footprint",
-      "questions": [
-        {
-          "question": "Does the organization calculate the carbon footprint of its products?",
-          "options": ["No calculations conducted", "Calculations are done for a few key products only", "Calculated for most products", "Comprehensive calculations for all products", "Advanced calculations with regular updates and third-party validation"],
-          "weights": [1, 2, 3, 4, 5]
-        },
-        {
-          "question": "Are Scope 1, Scope 2, and Scope 3 emissions included in the carbon footprint calculations?",
-          "options": ["No emissions included", "Only Scope 1 emissions included", "Scope 1 and 2 emissions included", "Scope 1, 2, and some Scope 3 emissions included", "Comprehensive Scope 1, 2, and 3 emissions consistently included"],
-          "weights": [1, 2, 3, 4, 5]
-        },
-        {
-          "question": "Does the organization take measures to reduce the carbon footprint of its products?",
-          "options": ["No measures implemented", "Limited reduction measures for specific products", "Measures implemented for most products", "Significant reduction measures integrated", "Industry-leading measures applied with measurable impact"],
-          "weights": [1, 2, 3, 4, 5]
-        },
-        {
-          "question": "Does the organization collaborate with suppliers and partners to reduce the carbon footprint across the value chain?",
-          "options": ["No emissions included", "Only Scope 1 emissions included", "Scope 1 and 2 emissions included", "Scope 1, 2, and some Scope 3 emissions included", "Comprehensive Scope 1, 2, and 3 emissions consistently included"],
-          "weights": [1, 2, 3, 4, 5]
-        }
-      ]
-    },
-    {
-      "topic": "Auditing",
-      "questions": [
-        {
-          "question": "How often do you conduct audits?",
-          "options": ["Monthly", "Quarterly", "Annually", "Never"],
-          "weights": [5, 4, 3, 1]
-        },
-        {
-          "question": "Who performs the audits?",
-          "options": ["Internal Team", "External Firm"],
-          "weights": [3, 5]
-        }
-      ]
-    }
-  ]
+  "Sustainability": {
+    "Product Carbon Footprint": [
+      {
+        "question": "Does the organization calculate the carbon footprint of its products?",
+        "options": [
+          "No calculations conducted",
+          "Calculations are done for a few key products only",
+          "Calculated for most products",
+          "Comprehensive calculations for all products",
+          "Advanced calculations with regular updates and third-party validation"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are Scope 1, Scope 2, and Scope 3 emissions included in the carbon footprint calculations?",
+        "options": [
+          "No emissions included",
+          "Only Scope 1 emissions included",
+          "Scope 1 and 2 emissions included",
+          "Scope 1, 2, and some Scope 3 emissions included",
+          "Comprehensive Scope 1, 2, and 3 emissions consistently included"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      }
+    ],
+    "Auditing": [
+      {
+        "question": "How often do you conduct audits?",
+        "options": ["Monthly", "Quarterly", "Annually", "Never"],
+        "weights": [5, 4, 3, 1]
+      },
+      {
+        "question": "Who performs the audits?",
+        "options": ["Internal Team", "External Firm"],
+        "weights": [3, 5]
+      }
+    ]
+  },
+  "Resource Management": {
+    "Natural Resources": [
+      {
+        "question": "Does the organization monitor the usage of natural resources?",
+        "options": [
+          "No monitoring conducted",
+          "Monitoring of some key resources only",
+          "Monitoring for most natural resources",
+          "Comprehensive monitoring system in place",
+          "Advanced monitoring with predictive analysis"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Are there measures to conserve water resources?",
+        "options": [
+          "No conservation measures",
+          "Limited measures for specific areas",
+          "Measures implemented for most areas",
+          "Significant water conservation strategies in place",
+          "Industry-leading water conservation initiatives"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      },
+      {
+        "question": "Does the organization aim for zero deforestation in its operations?",
+        "options": [
+          "No aim for zero deforestation",
+          "Minimal efforts towards reducing deforestation",
+          "Partial efforts for zero deforestation",
+          "Significant steps towards achieving zero deforestation",
+          "Committed to achieving zero deforestation across operations"
+        ],
+        "weights": [1, 2, 3, 4, 5]
+      }
+    ]
+  }
 }

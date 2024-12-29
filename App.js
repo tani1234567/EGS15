@@ -7,6 +7,8 @@ import CompanyRegistrationScreen from "./screens/CompanyRegistrationScreen";
 import EmployeeLoginScreen from "./screens/EmployeeLoginScreen";
 import EmployeeRegistrationScreen from "./screens/EmployeeRegistrationScreen";
 import QuestionnaireTopicsScreen from "./screens/QuestionnaireTopicsScreen";
+import QuestionsScreen from "./screens/QuestionsScreen";
+//import UploadData from "./screens/uploadData";
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,11 @@ const App = () => {
             component={CompanyLoginScreen}
             options={{ title: "Company Login" }}
           />
+          {/* <Stack.Screen
+            name="UploadData"
+            component={UploadData}
+            options={{ title: "uploadData" }}
+          /> */}
           <Stack.Screen
             name="CompanyRegistrationScreen"
             component={CompanyRegistrationScreen}
@@ -39,6 +46,11 @@ const App = () => {
             name="QuestionnaireTopicsScreen"
             component={QuestionnaireTopicsScreen}
             options={{ title: "Topics" }}
+          />
+          <Stack.Screen
+            name="QuestionsScreen"
+            component={QuestionsScreen}
+            options={{ title: "QuestionsScreen" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

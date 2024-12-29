@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import { db } from "../firebase"; // Import Firebase config
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { AuthContext } from "../Context/AuthContext"; // Import AuthContext
 
 const CompanyLoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { setCompanyId, setCompanyName } = useContext(AuthContext); // Access context
 
   const validateInputs = () => {
     if (!email || !password) {
@@ -44,10 +46,15 @@ const CompanyLoginScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
 
+      console.log("Query result:", querySnapshot.docs); // Log query result
+
       if (!querySnapshot.empty) {
         Alert.alert("Success", "Login successful!");
         console.log("Company found:", querySnapshot.docs[0].data());
-
+        const companyData = querySnapshot.docs[0].data();
+        setCompanyId(querySnapshot.docs[0].id);
+        setCompanyName(companyData.name);
+        
         // Navigate to Employee Login Screen
         navigation.navigate("EmployeeLoginScreen", {
           companyId: querySnapshot.docs[0].id, // Pass company ID
