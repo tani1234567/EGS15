@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebase"; // Adjust the path to your firebase.js file
 
 const EnvironmentalPillarScreen = () => {
-  const data = [
-    { label: "Product Carbon Footprint", score: 21, color: "#FF0000" },
-    { label: "Natural Resource Utilization", score: 45, color: "#FFA500" },
-    { label: "Pollution", score: 65, color: "#ADFF2F" },
-    { label: "Carbon Emission", score: 91, color: "#008000" },
-    { label: "Waste Management", score: 65, color: "#008000" },
-    { label: "Recycling", score: 27, color: "#FF4500" },
-  ];
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "questionnaireResponses")
+        );
+        const fetchedData = [];
+        querySnapshot.forEach((doc) => {
+          const { topic, totalScore } = doc.data();
+          fetchedData.push({ label: topic, score: totalScore });
+        });
+        setData(fetchedData);
+      } catch (error) {
+        console.error("Error fetching Firestore data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Rearrange data into 3 columns
   const numColumns = 3;
@@ -25,7 +40,7 @@ const EnvironmentalPillarScreen = () => {
         {data.map((cell, index) => (
           <View
             key={index}
-            style={[styles.cell, { backgroundColor: cell.color }]}
+            style={[styles.cell, { backgroundColor: cell.color || "#8c8c8c" }]} // Default color if not provided
           >
             <Text style={styles.score}>{cell.score}</Text>
             <Text style={styles.label}>{cell.label}</Text>
@@ -50,11 +65,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: "#007c7c",
     padding: 20,
+    borderRadius:10
   },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap", // Wrap rows automatically
-    justifyContent: "space-between", // Distribute cells evenly
+    justifyContent: "flex-start", // Distribute cells evenly
   },
   cell: {
     width: "30.33%", // Ensures 3 columns with adaptive spacing
@@ -63,7 +79,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
-  },
+    marginHorizontal:5 
+    },
   score: {
     fontSize: 20,
     fontWeight: "bold",

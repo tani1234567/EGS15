@@ -187,7 +187,7 @@ const QuestionsScreen = ({ navigation, route }) => {
                   handleOptionSelect(currentQuestion.weights[optionIndex])
                 }
               />
-              <Text>{option}</Text>
+              <Text style={styles.optionText}>{option}</Text>
             </View>
           ))}
         </View>
@@ -227,8 +227,17 @@ const styles = StyleSheet.create({
   },
   optionContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems:"center",
     marginVertical: 8,
+    
+  },
+  optionText: {
+    flex: 1, // Allow the text to take up remaining space
+    flexWrap: "wrap", // Ensure text wraps onto the next line
+    marginLeft: 3, // Add spacing between radio button and text
+    fontSize: 16, // Adjust font size for better readability
+    color: "#333", // Consistent dark gray color
+    marginRight:2
   },
   messageText: {
     fontSize: 18,
