@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Button,
+  StyleSheet,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 
@@ -9,26 +17,22 @@ const CompanyRegistrationScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const validateInputs = () => {
-    // Check if all fields are filled
     if (!companyName || !email || !password) {
       Alert.alert("Error", "All fields are required!");
       return false;
     }
 
-    // Validate company name length
     if (companyName.length < 3) {
       Alert.alert("Error", "Company name must be at least 3 characters long.");
       return false;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       Alert.alert("Error", "Please enter a valid email address.");
       return false;
     }
 
-    // Validate password strength
     const passwordRegex =
       /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -46,18 +50,14 @@ const CompanyRegistrationScreen = ({ navigation }) => {
     if (!validateInputs()) return;
 
     try {
-      // Add the company details to Firestore
       const docRef = await addDoc(collection(db, "companies"), {
         name: companyName,
         email: email.toLowerCase(),
-        password, // Store hashed passwords in production for security
+        password,
         createdAt: new Date(),
       });
 
       Alert.alert("Success", "Company registered successfully!");
-      console.log("Document written with ID:", docRef.id);
-
-      // Navigate to the company login screen after successful registration
       navigation.navigate("CompanyLoginScreen");
     } catch (error) {
       console.error("Error adding document:", error);
@@ -94,6 +94,13 @@ const CompanyRegistrationScreen = ({ navigation }) => {
       />
 
       <Button title="Register" onPress={handleRegister} />
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CompanyLoginScreen")}
+        style={styles.hyperlink}
+      >
+        <Text style={styles.hyperlinkText}>Already Registered Your Company? Login here</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -120,6 +127,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     paddingHorizontal: 8,
     backgroundColor: "#fff",
+  },
+  hyperlink: {
+    marginTop: 16,
+  },
+  hyperlinkText: {
+    fontSize: 16,
+    color: "#007BFF",
   },
 });
 

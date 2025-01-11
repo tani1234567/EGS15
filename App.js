@@ -1,7 +1,7 @@
 import React from "react";
 import { AuthProvider } from "./Context/AuthContext";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, Header } from "@react-navigation/stack";
 import CompanyLoginScreen from "./screens/CompanyLoginScreen";
 import CompanyRegistrationScreen from "./screens/CompanyRegistrationScreen";
 import EmployeeLoginScreen from "./screens/EmployeeLoginScreen";
@@ -27,7 +27,7 @@ const App = () => {
           <Stack.Screen
             name="CompanyLoginScreen"
             component={CompanyLoginScreen}
-            options={{ title: "Company Login" }}
+            options={{headerShown:false}}
           />
           <Stack.Screen
             name="CompanyRegistrationScreen"

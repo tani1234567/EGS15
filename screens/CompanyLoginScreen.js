@@ -6,7 +6,9 @@ import {
   Button,
   StyleSheet,
   Alert,
-  TouchableOpacity, 
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import { db } from "../firebase"; // Import Firebase config
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -46,18 +48,14 @@ const CompanyLoginScreen = ({ navigation }) => {
       );
       const querySnapshot = await getDocs(q);
 
-      console.log("Query result:", querySnapshot.docs); // Log query result
-
       if (!querySnapshot.empty) {
         Alert.alert("Success", "Login successful!");
-        console.log("Company found:", querySnapshot.docs[0].data());
         const companyData = querySnapshot.docs[0].data();
         setCompanyId(querySnapshot.docs[0].id);
         setCompanyName(companyData.name);
-        
-        // Navigate to Employee Login Screen
+
         navigation.navigate("EmployeeLoginScreen", {
-          companyId: querySnapshot.docs[0].id, // Pass company ID
+          companyId: querySnapshot.docs[0].id,
         });
       } else {
         Alert.alert("Error", "Invalid email or password!");
@@ -72,6 +70,13 @@ const CompanyLoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* Add Image at the Top */}
+      <Image
+        source={require("../images/ESG1.jpg")} // Replace with your image path
+        style={styles.logo}
+        resizeMode="contain"
+      />
+
       <Text style={styles.title}>Company Login</Text>
 
       <TextInput
@@ -92,9 +97,11 @@ const CompanyLoginScreen = ({ navigation }) => {
       />
 
       {isLoading ? (
-        <Text>Loading...</Text>
+        <ActivityIndicator size="large" color="#007BFF" />
       ) : (
-        <Button title="Login" onPress={handleLogin} />
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
       )}
 
       {/* Link to the Company Registration Screen */}
@@ -116,22 +123,43 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f0f8ff",
+  },
+  logo: {
+    width: 350,
+    height: 200,
+    marginBottom: 10,
+    borderRadius:20,
+    marginTop:20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 16,
+    color: "#333",
+    marginBottom: 20,
   },
   input: {
     width: "100%",
-    height: 40,
+    height: 45,
     borderColor: "#ccc",
     borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 12,
-    paddingHorizontal: 8,
+    borderRadius: 8,
+    marginBottom: 16,
+    paddingHorizontal: 12,
     backgroundColor: "#fff",
+  },
+  loginButton: {
+    width: "100%",
+    backgroundColor: "#007BFF",
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   registerLink: {
     marginTop: 16,
