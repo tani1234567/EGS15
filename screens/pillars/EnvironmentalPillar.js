@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase"; // Adjust the path to your firebase.js file
+import CircularProgress from "react-native-circular-progress-indicator";
+
+// Function to calculate color based on score
+const getProgressColor = (score) => {
+  // Score ranges from 0 (red) to 25 (green)
+  const normalizedScore = (score / 25) * 100; // Normalize to 0–100
+  const red = Math.round(255 - (normalizedScore / 100) * 255); // Decrease red as score increases
+  const green = Math.round((normalizedScore / 100) * 255); // Increase green as score increases
+  return `rgb(${red}, ${green}, 0)`; // No blue component
+};
 
 const EnvironmentalPillarScreen = () => {
   const [data, setData] = useState([]);
@@ -26,23 +36,22 @@ const EnvironmentalPillarScreen = () => {
     fetchData();
   }, []);
 
-  // Rearrange data into 3 columns
-  const numColumns = 3;
-  const rows = [];
-  for (let i = 0; i < data.length; i += numColumns) {
-    rows.push(data.slice(i, i + numColumns));
-  }
-
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Environmental Pillar</Text>
       <View style={styles.grid}>
         {data.map((cell, index) => (
-          <View
-            key={index}
-            style={[styles.cell, { backgroundColor: cell.color || "#8c8c8c" }]} // Default color if not provided
-          >
-            <Text style={styles.score}>{cell.score}</Text>
+          <View key={index} style={styles.cell}>
+            <CircularProgress
+              value={cell.score}
+              radius={50}
+              maxValue={25} // Updated max value
+              progressValueStyle={styles.progressValue}
+              activeStrokeColor={getProgressColor(cell.score)} // Dynamic color
+              inActiveStrokeColor="#e0e0e0"
+              activeStrokeWidth={10}
+              inActiveStrokeWidth={10}
+            />
             <Text style={styles.label}>{cell.label}</Text>
           </View>
         ))}
@@ -56,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: "white",
+    paddingTop: 45,
   },
   header: {
     fontSize: 24,
@@ -65,34 +75,31 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     backgroundColor: "#007c7c",
     padding: 20,
-    borderRadius:10
+    borderRadius: 10,
   },
   grid: {
     flexDirection: "row",
-    flexWrap: "wrap", // Wrap rows automatically
-    justifyContent: "flex-start", // Distribute cells evenly
+    flexWrap: "wrap", // Allow wrapping to a new row
+    justifyContent: "space-between", // Space evenly between items
   },
   cell: {
-    width: "30.33%", // Ensures 3 columns with adaptive spacing
-    aspectRatio: 1, // Makes cells square
-    marginVertical: 6,
-    justifyContent: "center",
+    width: "30%", // Ensure three items per row
+    height: 150, // Fixed height to align all circles
+    marginVertical: 10,
+    justifyContent: "flex-start", // Start content at the top of the cell
     alignItems: "center",
-    borderRadius: 8,
-    marginHorizontal:5 
-    },
-  score: {
-    fontSize: 20,
+  },
+  progressValue: {
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#007c7c",
   },
   label: {
     fontSize: 14,
     fontWeight: "500",
-    color: "#FFFFFF",
-    textAlign: "center",
-    marginTop: 6,
+    color: "#007c7c",
+    textAlign: "center", // Center-align text
+    marginTop: 8,
   },
 });
-
 export default EnvironmentalPillarScreen;

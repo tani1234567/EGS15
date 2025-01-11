@@ -27,7 +27,7 @@ const App = () => {
           <Stack.Screen
             name="CompanyLoginScreen"
             component={CompanyLoginScreen}
-            options={{headerShown:false}}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="CompanyRegistrationScreen"
@@ -62,7 +62,7 @@ const App = () => {
           <Stack.Screen
             name="EnvironmentalPillar"
             component={EnvironmentalPillarScreen}
-            options={{ title: "EnvironmentalPillar" }}
+            options={{ headerShown: false }}
           />
         </Stack.Navigator>
       </NavigationContainer>
